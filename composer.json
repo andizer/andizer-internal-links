@@ -1,0 +1,11 @@
+{
+  "name": "andizer/yoast-internal-links",
+  "description": "Shows the links saved in Yoast SEO",
+  "type": "project",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Andizer\\Plugin\\YoastInternalLinks\\": "src/"
+    }
+  }
+}
