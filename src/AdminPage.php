@@ -124,7 +124,7 @@ class AdminPage {
 				"SELECT p.post_title, p.ID, y.post_id  
 				FROM {$wpdb->prefix}yoast_seo_links y 
 			    JOIN $wpdb->posts p ON p.ID=y.target_post_id 
-				WHERE y.post_id = %d GROUP BY y.target_post_id",
+				WHERE y.post_id = %d AND y.target_indexable_id IS NOT NULL GROUP BY y.target_post_id",
 				$post_id,
 			)
 		);
