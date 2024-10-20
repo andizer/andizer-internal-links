@@ -5,8 +5,8 @@ msgstr ""
 "Project-Id-Version: Andizer - Internal links 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/andizer-internal-"
 "links\n"
-"POT-Creation-Date: 2024-10-20T12:21:51+00:00\n"
-"PO-Revision-Date: 2024-10-20 14:37+0200\n"
+"POT-Creation-Date: 2024-10-20T13:18:11+00:00\n"
+"PO-Revision-Date: 2024-10-20 15:18+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -18,8 +18,8 @@ msgstr ""
 
 #. Plugin Name of the plugin
 #: andizer-internal-links.php
-msgid "Andizer - Internal links"
-msgstr "Andizer - Interne links"
+msgid "Andizer internal links"
+msgstr "Andizer interne links"
 
 #. Plugin URI of the plugin
 #. Author URI of the plugin
