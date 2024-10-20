@@ -40,7 +40,7 @@ class AdminPage {
 			return null;
 		}
 
-		$post_id = \sanitize_text_field($_GET['post']);
+		$post_id = \sanitize_text_field( \wp_unslash( $_GET['post'] ) );
 		if ( empty( $post_id ) ) {
 			return null;
 		}
@@ -73,6 +73,7 @@ class AdminPage {
 					! empty( $link->post_title) ? \esc_html( $link->post_title ) : "<em>No title set</em>"
 				);
 
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped in assignment.
 				echo "<li>" . $link . "</li>";
 			}
 			echo '</ul>';
@@ -143,6 +144,7 @@ class AdminPage {
 				! empty( $link->post_title) ? \esc_html( $link->post_title ) : "<em>No title set</em>"
 			);
 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped in assignment.
 			echo "<li>" . $target_link . " - " . $edit_link . "</li>";
 		}
 		echo '</ul>';
@@ -152,13 +154,14 @@ class AdminPage {
 	private function get_links_without_indexable() {
 		global $wpdb;
 
-		$like = \esc_sql( home_url() . '/%' );
-
-		return $wpdb->get_results( "
-			SELECT y.url, y.post_id, p.post_title
-			FROM {$wpdb->prefix}yoast_seo_links y 
-			JOIN {$wpdb->posts} p ON p.ID = y.post_id 
-			WHERE y.target_post_id IS NULL AND y.target_indexable_id IS NULL AND y.url LIKE '" . $like. "' GROUP BY y.url
-		" );
+		return $wpdb->get_results(
+			$wpdb->prepare("
+				SELECT y.url, y.post_id, p.post_title
+				FROM {$wpdb->prefix}yoast_seo_links y 
+				JOIN {$wpdb->posts} p ON p.ID = y.post_id 
+				WHERE y.target_post_id IS NULL AND y.target_indexable_id IS NULL AND y.url LIKE %s GROUP BY y.url",
+				$wpdb->esc_like( \home_url() ) . "%"
+			)
+		);
 	}
 }
