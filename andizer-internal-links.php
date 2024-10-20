@@ -5,6 +5,7 @@
  * Description:         Shows the internal links saved in Yoast SEO
  * Author:              Andy Meerwaldt
  * Author URI:          https://github.com/andizer/andizer-internal-links
+ * Text-domain          andizer-internal-links
  *
  * Version:             1.0.0
  * Requires at least:   6.2.0
