@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name:         Andizer - Internal links
+ * Plugin Name:         Andizer internal links
  * Plugin URI:          https://github.com/andizer/andizer-internal-links
  * Description:         Shows the internal links saved in Yoast SEO
  * Author:              Andy Meerwaldt
@@ -12,8 +12,8 @@
  * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
  * Version:             1.0.0
- * Requires at least:   6.2.0
- * Tested up to:        6.3
+ * Requires at least:   6.5.0
+ * Tested up to:        6.6
  * Requires PHP:        8.2
  */
 
