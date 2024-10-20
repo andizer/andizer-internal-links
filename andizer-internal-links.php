@@ -17,6 +17,13 @@ use Andizer\Plugin\YoastInternalLinks\RowActions;
 
 require_once( 'vendor/autoload.php' );
 
+add_action( 'admin_init', static function() {
+	// Deactivates the plugin when the Yoast plugin is not active.
+	if ( ! \defined( 'WPSEO_PATH' ) ) {
+		\deactivate_plugins( [ \plugin_basename( __FILE__ ) ] );
+	}
+} );
+
 add_action( 'plugins_loaded', static function() {
 	$admin_page = new AdminPage();
 	$rowactions = new RowActions();
