@@ -99,9 +99,12 @@ class AdminPage {
 	private function get_incomping_links( $post_id ) {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,  WordPress.DB.DirectDatabaseQuery.NoCaching -- This is intended because of custom table call, also actual data is needed here, therefore no cache is used.
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT p.post_title, p.ID FROM {$wpdb->prefix}yoast_seo_links y JOIN $wpdb->posts p ON p.ID=y.post_id WHERE y.target_post_id = %d GROUP BY y.post_id",
+				"SELECT p.post_title, p.ID FROM {$wpdb->prefix}yoast_seo_links y 
+			    JOIN $wpdb->posts p ON p.ID=y.post_id 
+              	WHERE y.target_post_id = %d GROUP BY y.post_id",
 				$post_id,
 			)
 		);
@@ -110,14 +113,17 @@ class AdminPage {
 	private function get_outgoing_links( $post_id ) {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,  WordPress.DB.DirectDatabaseQuery.NoCaching -- This is intended because of custom table call, also actual data is needed here, therefore no cache is used.
 		return $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT p.post_title, p.ID, y.post_id  FROM {$wpdb->prefix}yoast_seo_links y JOIN $wpdb->posts p ON p.ID=y.target_post_id WHERE y.post_id = %d GROUP BY y.target_post_id",
+				"SELECT p.post_title, p.ID, y.post_id  
+				FROM {$wpdb->prefix}yoast_seo_links y 
+			    JOIN $wpdb->posts p ON p.ID=y.target_post_id 
+				WHERE y.post_id = %d GROUP BY y.target_post_id",
 				$post_id,
 			)
 		);
 	}
-
 
 	private function render_links_without_indexables_page(): void {
 		$links = $this->get_links_without_indexable();
@@ -154,6 +160,7 @@ class AdminPage {
 	private function get_links_without_indexable() {
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,  WordPress.DB.DirectDatabaseQuery.NoCaching -- This is intended because of custom table call, also actual data is needed here, therefore no cache is used.
 		return $wpdb->get_results(
 			$wpdb->prepare("
 				SELECT y.url, y.post_id, p.post_title
