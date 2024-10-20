@@ -23,7 +23,7 @@ class RowActions {
 					'tools.php?page=' . AdminPage::SECTION . '&post=' . $post->ID,
 				)
 			),
-			'Internal linking'
+			\__( 'Internal linking', 'andizer-internal-links' )
 		);
 
 		return $actions;

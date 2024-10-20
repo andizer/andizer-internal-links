@@ -12,8 +12,10 @@ class AdminPage {
 	public function __invoke() {
 		\add_submenu_page(
 			'tools.php',
-			'Yoast internal links',
-			'Yoast internal links',
+			/* translators: %s expands to Andizer */
+			\sprintf( __( '%s internal links', 'andizer-internal-links' ), 'Andizer'),
+			/* translators: %s expands to Andizer */
+			\sprintf( __( '%s internal links', 'andizer-internal-links' ), 'Andizer'),
 			'manage_options',
 			self::SECTION,
 			[ $this, 'show_menu_page' ]
@@ -22,7 +24,9 @@ class AdminPage {
 
 	public function show_menu_page(): void {
 		echo '<div class="wrap">';
-		echo '<h2>Yoast internal links</h2>';
+
+		/* translators: %s expands to Andizer */
+		echo '<h2>' . \sprintf( \esc_html__( '%s internal links', 'andizer-internal-links' ), 'Andizer' ) . '</h2>';
 
 		$post = $this->get_post();
 		if ( $post ) {
@@ -58,11 +62,12 @@ class AdminPage {
 		$incoming = $this->get_incomping_links($post->ID);
 		$outgoing = $this->get_outgoing_links($post->ID);
 
-		echo '<p>Internal linking for: ' . \esc_html( $post->post_title ) . '</p>';
+		/* translators: %s expands to the post title */
+		echo '<p>' . \sprintf( \esc_html__( 'Internal linking for: %s', 'andizer-internal-links' ), \esc_html( $post->post_title ) ) . '</p>';
 
-		echo '<h3>Incoming links</h3>';
+		echo '<h3>' . \esc_html__( 'Incoming links', 'andizer-internal-links' ) . '</h3>';
 		if ( !empty ( $incoming ) ) {
-			echo "<p>In the pages below there are incoming links to this page. Clicking the links below will navigate to the post edit page.</p>";
+			echo '<p>' . \esc_html__( 'In the pages below there are incoming links to this page. Clicking the links below will navigate to the post edit page.', 'andizer-internal-links' ) . '</p>';
 			echo '<ul class="ul-disc">';
 			foreach ($incoming as $link) {
 				$link = \sprintf(
@@ -78,19 +83,19 @@ class AdminPage {
 			}
 			echo '</ul>';
 		} else {
-			echo '<p>No incoming links found.</p>';
+			echo '<p>' . \esc_html__( 'No incoming links found.', 'andizer-internal-links' ) . '</p>';
 		}
 
-		echo '<h3>Outgoing links</h3>';
+		echo '<h3>' . \esc_html__( 'Outgoing links', 'andizer-internal-links' ) . '</h3>';
 		if ( ! empty( $outgoing ) ) {
-			echo "<p>This page is linking to the following pages.</p>";
+			echo '<p>' . \esc_html__( 'This page is linking to the following pages.', 'andizer-internal-links' ) . '</p>';
 			echo '<ul class="ul-disc">';
 			foreach ($outgoing as $link) {
 				echo "<li>". \esc_html( $link->post_title ) . "</li>";
 			}
 			echo '</ul>';
 		} else {
-			echo '<p>No outgoing links found.</p>';
+			echo '<p>' . \esc_html__( 'No outgoing links found.', 'andizer-internal-links' ) . '</p>';
 		}
 
 		echo '<hr />';
@@ -129,13 +134,13 @@ class AdminPage {
 		$links = $this->get_links_without_indexable();
 
 		if ( empty($links)) {
-			echo '<div class="notice notice-error"><p>There is no internal links referring to a non-indexable page.</p></div>';
+			echo '<div class="notice notice-error"><p>' . \esc_html__('There are no internal links referring to a non-indexable page', 'andizer-internal-links' ) . '</p></div>';
 
 			return;
 		}
 
-		echo '<h3>Links without indexable</h3>';
-		echo "<p>The following links don't have an indexable, possibly some of them are referring to non-existing pages.</p>";
+		echo '<h3>' . \esc_html__( 'Links without indexable', 'andizer-internal-links' ) . '</h3>';
+		echo '<p>' . \esc_html__( 'The following links don\'t have an indexable, possibly some of them are referring to non-existing pages.', 'andizer-internal-links' ) . '</p>';
 		echo '<ul class="ul-disc">';
 		foreach ($links as $link) {
 			$target_link = \sprintf(
@@ -143,10 +148,11 @@ class AdminPage {
 			);
 
 			$edit_link = \sprintf(
-				'<a href="%s">Edit: %s</a>',
+				'<a href="%s">%s: %s</a>',
 				\admin_url(
 					\sprintf('post.php?post=%s&action=edit', \esc_attr( $link->post_id ) )
 				),
+				\esc_html__( 'Edit', 'andizer-internal-links'),
 				! empty( $link->post_title) ? \esc_html( $link->post_title ) : "<em>No title set</em>"
 			);
 
