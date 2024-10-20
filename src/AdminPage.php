@@ -11,7 +11,7 @@ class AdminPage {
 
 	public function __invoke() {
 		\add_submenu_page(
-			( !empty( $_GET['post']) ) ? 'tools.php' : null,
+			'tools.php',
 			'Yoast internal links',
 			'Yoast internal links',
 			'manage_options',
@@ -21,11 +21,17 @@ class AdminPage {
 	}
 
 	public function show_menu_page(): void {
-		$post = $this->get_post();
-
 		echo '<div class="wrap">';
 		echo '<h2>Yoast internal links</h2>';
-		$this->render_page($post);
+
+		$post = $this->get_post();
+		if ( $post ) {
+			$this->render_page($post);
+		}
+		else {
+			$this->render_links_without_indexables_page();
+		}
+
 		echo '</div>';
 	}
 
@@ -109,5 +115,50 @@ class AdminPage {
 				$post_id,
 			)
 		);
+	}
+
+
+	private function render_links_without_indexables_page(): void {
+		$links = $this->get_links_without_indexable();
+
+		if ( empty($links)) {
+			echo '<div class="notice notice-error"><p>There is no internal links referring to a non-indexable page.</p></div>';
+
+			return;
+		}
+
+		echo '<h3>Links without links</h3>';
+		echo "<p>The following links don't have an indexable, possibly some of them are referring to non-existing pages.</p>";
+		echo '<ul class="ul-disc">';
+		foreach ($links as $link) {
+			$target_link = \sprintf(
+				'<a href="%s" target="_blank">%s</a>', $link->url, \esc_html( $link->url )
+			);
+
+			$edit_link = \sprintf(
+				'<a href="%s">Edit: %s</a>',
+				\admin_url(
+					\sprintf('post.php?post=%s&action=edit', \esc_attr( $link->post_id ) )
+				),
+				! empty( $link->post_title) ? \esc_html( $link->post_title ) : "<em>No title set</em>"
+			);
+
+			echo "<li>" . $target_link . " - " . $edit_link . "</li>";
+		}
+		echo '</ul>';
+
+	}
+
+	private function get_links_without_indexable() {
+		global $wpdb;
+
+		$like = \esc_sql( home_url() . '/%' );
+
+		return $wpdb->get_results( "
+			SELECT y.url, y.post_id, p.post_title
+			FROM {$wpdb->prefix}yoast_seo_links y 
+			JOIN {$wpdb->posts} p ON p.ID = y.post_id 
+			WHERE y.target_post_id IS NULL AND y.target_indexable_id IS NULL AND y.url LIKE '" . $like. "' GROUP BY y.url
+		" );
 	}
 }
