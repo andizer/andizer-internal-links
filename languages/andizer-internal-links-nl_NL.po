@@ -1,0 +1,100 @@
+# Copyright (C) 2024 Andy Meerwaldt
+# This file is distributed under the same license as the Andizer - Internal links plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Andizer - Internal links 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/andizer-internal-"
+"links\n"
+"POT-Creation-Date: 2024-10-20T12:21:51+00:00\n"
+"PO-Revision-Date: 2024-10-20 14:37+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+"X-Domain: andizer-internal-links\n"
+
+#. Plugin Name of the plugin
+#: andizer-internal-links.php
+msgid "Andizer - Internal links"
+msgstr "Andizer - Interne links"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: andizer-internal-links.php
+msgid "https://github.com/andizer/andizer-internal-links"
+msgstr "https://github.com/andizer/andizer-internal-links"
+
+#. Description of the plugin
+#: andizer-internal-links.php
+msgid "Shows the internal links saved in Yoast SEO"
+msgstr "Toont de interne links die zijn opgeslagen in Yoast SEO"
+
+#. Author of the plugin
+#: andizer-internal-links.php
+msgid "Andy Meerwaldt"
+msgstr "Andy Meerwaldt"
+
+#. translators: %s expands to Andizer
+#: src/AdminPage.php:16 src/AdminPage.php:18 src/AdminPage.php:29
+msgid "%s internal links"
+msgstr "%s interne links"
+
+#. translators: %s expands to the post title
+#: src/AdminPage.php:66
+msgid "Internal linking for: %s"
+msgstr "Interne links voor: %s"
+
+#: src/AdminPage.php:68
+msgid "Incoming links"
+msgstr "Inkomende links"
+
+#: src/AdminPage.php:70
+msgid ""
+"In the pages below there are incoming links to this page. Clicking the links "
+"below will navigate to the post edit page."
+msgstr ""
+"In de pagina’s hieronder staan inkomende links naar deze pagina. Het klikken "
+"op de links hieronder, navigeert je naar de post bewerk pagina."
+
+#: src/AdminPage.php:86
+msgid "No incoming links found."
+msgstr "Geen inkomende links gevonden."
+
+#: src/AdminPage.php:89
+msgid "Outgoing links"
+msgstr "Uitgaande links"
+
+#: src/AdminPage.php:91
+msgid "This page is linking to the following pages."
+msgstr "Deze pagina links naar de volgende pagina’s."
+
+#: src/AdminPage.php:98
+msgid "No outgoing links found."
+msgstr "Geen uitgaande links gevonden."
+
+#: src/AdminPage.php:137
+msgid "There are no internal links referring to a non-indexable page"
+msgstr "Er zijn geen interne links die verwijzen naar een non-indexalbe page"
+
+#: src/AdminPage.php:142
+msgid "Links without indexable"
+msgstr "Links zonder indexable"
+
+#: src/AdminPage.php:143
+msgid ""
+"The following links don't have an indexable, possibly some of them are "
+"referring to non-existing pages."
+msgstr ""
+"De volgende links hebben geen indexable, mogelijk dat een aantal ervan "
+"refereren naar niet-bestaande pagina’s."
+
+#: src/AdminPage.php:155
+msgid "Edit"
+msgstr "Bewerken"
+
+#: src/RowActions.php:26
+msgid "Internal linking"
+msgstr "Interne links"

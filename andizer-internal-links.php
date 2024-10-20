@@ -23,6 +23,9 @@ add_action( 'admin_init', static function() {
 	if ( ! \defined( 'WPSEO_PATH' ) ) {
 		\deactivate_plugins( [ \plugin_basename( __FILE__ ) ] );
 	}
+
+	// Loads the translations.
+	\load_plugin_textdomain( 'andizer-internal-links', false, \dirname( \plugin_basename( __FILE__ ) ) . '/languages' );
 } );
 
 add_action( 'plugins_loaded', static function() {
