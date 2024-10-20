@@ -6,6 +6,10 @@
  * Author:              Andy Meerwaldt
  * Author URI:          https://github.com/andizer/andizer-internal-links
  * Text-domain          andizer-internal-links
+ * Domain Path:         /languages
+ *
+ * License: GPLv3
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
  *
  * Version:             1.0.0
  * Requires at least:   6.2.0
