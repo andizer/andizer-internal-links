@@ -97,8 +97,6 @@ class AdminPage {
 		} else {
 			echo '<p>' . \esc_html__( 'No outgoing links found.', 'andizer-internal-links' ) . '</p>';
 		}
-
-		echo '<hr />';
 	}
 
 	private function get_incomping_links( $post_id ) {
