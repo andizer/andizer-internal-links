@@ -134,7 +134,7 @@ class AdminPage {
 			return;
 		}
 
-		echo '<h3>Links without links</h3>';
+		echo '<h3>Links without indexable</h3>';
 		echo "<p>The following links don't have an indexable, possibly some of them are referring to non-existing pages.</p>";
 		echo '<ul class="ul-disc">';
 		foreach ($links as $link) {
