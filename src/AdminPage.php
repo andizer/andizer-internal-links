@@ -59,24 +59,32 @@ class AdminPage {
 			return;
 		}
 
-		$incoming = $this->get_incomping_links($post->ID);
+		$incoming = $this->get_incoming_links($post->ID);
 		$outgoing = $this->get_outgoing_links($post->ID);
+
+        $incoming_link_ids = \wp_list_pluck( $incoming, 'ID' );
+        $outgoing_link_ids = \wp_list_pluck( $outgoing, 'ID' );
 
 		/* translators: %s expands to the post title */
 		echo '<p>' . \sprintf( \esc_html__( 'Internal linking for: %s', 'andizer-internal-links' ), \esc_html( $post->post_title ) ) . '</p>';
 
-		echo '<h3>' . \esc_html__( 'Incoming links', 'andizer-internal-links' ) . '</h3>';
+        $link_icon = '<span class="dashicons dashicons-admin-links"></span> ';
+        $link_icon_no = '<span class="dashicons dashicons-admin-links" style="color: #CCC"></span> ';
+
+		echo '<h3>' . \esc_html__( 'Incoming links', 'andizer-internal-links' ) . ' (' . \count($incoming) . ')</h3>';
 		if ( !empty ( $incoming ) ) {
 			echo '<p>' . \esc_html__( 'In the pages below there are incoming links to this page. Clicking the links below will navigate to the post edit page.', 'andizer-internal-links' ) . '</p>';
 			echo '<ul class="ul-disc">';
-			foreach ($incoming as $link) {
+			foreach ($incoming as $incoming_link) {
 				$link = \sprintf(
 					'<a href="%s">%s</a>',
 					\admin_url(
-						\sprintf('post.php?post=%s&action=edit', \esc_attr( $link->ID ) )
+						\sprintf('post.php?post=%s&action=edit', \esc_attr( $incoming_link->ID ) )
 					),
-					! empty( $link->post_title) ? \esc_html( $link->post_title ) : "<em>No title set</em>"
+					! empty( $incoming_link->post_title) ? \esc_html( $incoming_link->post_title ) : "<em>No title set</em>"
 				);
+
+                $link = (\in_array($incoming_link->ID, $outgoing_link_ids) ) ? $link_icon . $link : $link_icon_no . $link;
 
 				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Already escaped in assignment.
 				echo "<li>" . $link . "</li>";
@@ -86,12 +94,22 @@ class AdminPage {
 			echo '<p>' . \esc_html__( 'No incoming links found.', 'andizer-internal-links' ) . '</p>';
 		}
 
-		echo '<h3>' . \esc_html__( 'Outgoing links', 'andizer-internal-links' ) . '</h3>';
+		echo '<h3>' . \esc_html__( 'Outgoing links', 'andizer-internal-links' ) . ' (' . \count($outgoing) . ')</h3>';
 		if ( ! empty( $outgoing ) ) {
 			echo '<p>' . \esc_html__( 'This page is linking to the following pages.', 'andizer-internal-links' ) . '</p>';
 			echo '<ul class="ul-disc">';
-			foreach ($outgoing as $link) {
-				echo "<li>". \esc_html( $link->post_title ) . "</li>";
+			foreach ($outgoing as $outgoing_link) {
+                $link = \sprintf(
+                    '<a href="%s">%s</a>',
+                    \admin_url(
+                        \sprintf('post.php?post=%s&action=edit', \esc_attr( $outgoing_link->ID ) )
+                    ),
+                    ! empty( $outgoing_link->post_title) ? \esc_html( $outgoing_link->post_title ) : "<em>No title set</em>"
+                );
+
+                $link = (\in_array($outgoing_link->ID, $incoming_link_ids) ) ? $link_icon . $link : $link_icon_no . $link;
+
+				echo "<li>". $link . "</li>";
 			}
 			echo '</ul>';
 		} else {
@@ -99,15 +117,16 @@ class AdminPage {
 		}
 	}
 
-	private function get_incomping_links( $post_id ) {
+	private function get_incoming_links( $post_id ) {
 		global $wpdb;
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,  WordPress.DB.DirectDatabaseQuery.NoCaching -- This is intended because of custom table call, also actual data is needed here, therefore no cache is used.
 		return $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT p.post_title, p.ID FROM {$wpdb->prefix}yoast_seo_links y 
-			    JOIN $wpdb->posts p ON p.ID=y.post_id 
-              	WHERE y.target_post_id = %d GROUP BY y.post_id",
+			    JOIN $wpdb->posts p ON p.ID=y.post_id AND p.post_type IN('post', 'page') AND p.post_status='publish'
+              	WHERE y.target_post_id = %d GROUP BY y.post_id
+				ORDER BY p.post_title ASC",
 				$post_id,
 			)
 		);
@@ -121,8 +140,9 @@ class AdminPage {
 			$wpdb->prepare(
 				"SELECT p.post_title, p.ID, y.post_id  
 				FROM {$wpdb->prefix}yoast_seo_links y 
-			    JOIN $wpdb->posts p ON p.ID=y.target_post_id 
-				WHERE y.post_id = %d AND y.target_indexable_id IS NOT NULL GROUP BY y.target_post_id",
+			    JOIN $wpdb->posts p ON p.ID=y.target_post_id AND p.post_type IN('post', 'page')
+				WHERE y.post_id = %d AND y.target_indexable_id IS NOT NULL GROUP BY y.target_post_id
+				ORDER BY p.post_title ASC",
 				$post_id,
 			)
 		);
